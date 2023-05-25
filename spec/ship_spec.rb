@@ -18,4 +18,10 @@ RSpec.describe Ship do
       expect(@cruiser.health).to eq(3)
     end
   end
+
+  describe "#sunk?" do
+    it "is not sunk by default" do
+      expect(@cruiser.sunk?).to be false
+    end
+  end
 end

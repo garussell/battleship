@@ -1,4 +1,4 @@
-require "./lib/spec_helper"
+require "./spec/spec_helper"
 
 RSpec.describe Ship do
   before(:each) do
@@ -10,6 +10,12 @@ RSpec.describe Ship do
       expect(@cruiser).to be_an_instance_of(Ship)
       expect(@cruiser.name).to eq("Cruiser")
       expect(@cruiser.length).to eq(3)
+    end
+  end
+
+  describe "#health" do
+    it "has health" do
+      expect(@cruiser.health).to eq(3)
     end
   end
 end

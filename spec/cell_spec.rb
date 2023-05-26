@@ -46,12 +46,10 @@ RSpec.describe Cell do
       expect(@cell_1.render).to eq(".")
       @cell_1.fire_upon
       expect(@cell_1.render).to eq("M")
-
+      
       @cell_2.place_ship(@cruiser)
       expect(@cell_2.render).to eq(".")
-    end
 # show the ship
-    it 'it can render with optional argument' do
       expect(@cell_2.render(true)).to eq("S")
       @cell_2.fire_upon
       expect(@cell_2.render).to eq("H")

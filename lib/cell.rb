@@ -21,24 +21,43 @@ class Cell
     @shot_fired
   end
 
-  def fire_upon
-    if @ship != nil
-      @ship.hit
-      @shot_fired = true
-    else
-      @shot_fired = true
-    end
-  end
+  # def fire_upon
+  #   if @ship
+  #     @ship.hit
+  #     @shot_fired = true
+  #   else
+  #     @shot_fired = true
+  #   end
+  # end
 
+  def fire_upon
+    @ship&.hit
+    @shot_fired = true
+  end
+  # def render(view = false)
+  #   if @ship != nil && @ship.sunk?
+  #     "X"
+  #   elsif @ship != nil && @shot_fired == true
+  #     "H"
+  #   elsif @ship == nil && @shot_fired == true
+  #     "M"
+  #   elsif view == true && @ship != nil 
+  #     "S"
+  #   else 
+  #     view == false && @shot_fired == false 
+  #     "."
+  #   end
+  # end
   def render(view = false)
-    if @ship != nil && @shot_fired == true
+    if @ship&.sunk?
+      "X"
+    elsif @ship && @shot_fired
       "H"
-    elsif @ship == nil && @shot_fired == true
+    elsif !@ship && @shot_fired
       "M"
-    elsif view == true && @ship != nil && @shot_fired == false
+    elsif view && @ship
       "S"
-    else 
-      view == false && @shot_fired == false 
+    else
       "."
     end
   end
@@ -48,3 +67,4 @@ end
 # For 'S', the coordinate must have ship, ship is != nil and shot_fired = false.
 # For 'H', the coordinate must have ship, ship is != nil and fired_upon = true.
 # For 'X', the coordinate must have ship, ship is != nil and @ship.sunk? = true
+

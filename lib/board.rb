@@ -21,5 +21,12 @@ class Board
     }
   end
 
-  
+  def valid_coordinate?(coordinate)
+    @cells.has_key?(coordinate)
+  end
 end
+
+
+# placement must be equal to ship size "return false if 'placement'!= @length"
+# placement must be either horizontal or vertical, not diagnal
+#

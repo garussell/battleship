@@ -20,7 +20,6 @@ RSpec.describe Cell do
   end
   describe '#validations' do
     it 'can recognize valid coordinates' do
-
       expect(@board.valid_coordinate?("A1")).to eq(true)
       expect(@board.valid_coordinate?("D4")).to eq(true)
       expect(@board.valid_coordinate?("A5")).to eq(false)
@@ -29,7 +28,6 @@ RSpec.describe Cell do
     end
 
     it 'can validate placements' do
-
       expect(@board.valid_placement?(@cruiser, ["A1", "A2"])).to eq(false)
       expect(@board.valid_placement?(@submarine, ["A2", "A3", "A4"])).to eq(false)
       expect(@board.valid_placement?(@cruiser, ["A1", "A2", "A4"])).to eq(false)
@@ -39,4 +37,25 @@ RSpec.describe Cell do
     end
   end
 
+  describe '#place(ship, coordinates)' do
+    it 'can place ship on cell' do
+      @board.place(@cruiser, ["A1", "A2", "A3"])
+      cell_1 = @board.cells["A1"]
+      cell_2 = @board.cells["A2"]
+      cell_3 = @board.cells["A3"]
+      cell_4 = @board.cells["D4"]
+
+      expect(cell_1.ship).to be_a(Ship)
+      expect(cell_2.ship).to be_a(Ship)
+      expect(cell_3.ship).to be_a(Ship)
+      expect(cell_3.ship == cell_2.ship).to eq(true)
+      expect(cell_2.ship == cell_1.ship).to eq(true)
+      expect(cell_4.ship == cell_3.ship).to eq(false)
+    end
+
+    it 'cannot place ship on occupied cell' do
+      @board.place(@cruiser, ["A1", "A2", "A3"])
+      expect(@board.valid_placement?(@submarine, ["A1", "B1"])).to eq(false)
+    end
+  end
 end

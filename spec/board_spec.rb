@@ -38,7 +38,7 @@ RSpec.describe Cell do
   end
 
   describe '#place(ship, coordinates)' do
-    it 'can place ship on unoccupied cell' do
+    it 'can place ship on cell' do
       @board.place(@cruiser, ["A1", "A2", "A3"])
       cell_1 = @board.cells["A1"]
       cell_2 = @board.cells["A2"]
@@ -51,6 +51,11 @@ RSpec.describe Cell do
       expect(cell_3.ship == cell_2.ship).to eq(true)
       expect(cell_2.ship == cell_1.ship).to eq(true)
       expect(cell_4.ship == cell_3.ship).to eq(false)
+    end
+
+    it 'cannot place ship on occupied cell' do
+      @board.place(@cruiser, ["A1", "A2", "A3"])
+      expect(@board.valid_placement?(@submarine, ["A1", "B1"])).to eq(false)
     end
   end
 end

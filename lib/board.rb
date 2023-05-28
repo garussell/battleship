@@ -44,11 +44,17 @@ class Board
     # (coordinates.all? {|cell| @cells[cell].empty? })
   end
 
-  # def placement_length
-  #   ship.length == coordinates.length
-  # end
+  def place(ship, coordinates)
+    valid_placement?(ship, coordinates)
+    coordinates.each do |coordinate|
+      @cells[coordinate].place_ship(ship)
+    end
+  end
 end
 
+# def placement_length
+#   ship.length == coordinates.length
+# end
 # @board.cells.ship.length(?) - 
 # does conseceutive_order method need if (block) else nil to elimate diagonals?
 # what if the length == the coordinates range?

@@ -30,20 +30,20 @@ class Board
   def valid_placement?(ship, coordinates)
     letters = coordinates.map { |coord| coord[0] }
     numbers = coordinates.map { |coord| coord[1] }
-  
+    
     ord_letter = letters.map(&:ord)
     num = numbers.map(&:to_i)
     consecutive_order = consecutive_order?(ord_letter, num) 
     
-    (ship.length == coordinates.length) && consecutive_order
+    (ship.length == coordinates.length) && consecutive_order &&
+    (coordinates.all? {|cell| @cells[cell].empty? })
   end
   
   def consecutive_order?(ord_letter, num)
     (ord_letter.uniq.size == 1 && (num.each_cons(2).all? { |val_1, val_2| val_2 == val_1 + 1 })) ||
     (num.uniq.size == 1 && ord_letter.each_cons(2).all? { |num_1, num_2| num_2 == num_1 + 1 })  
-    # (coordinates.all? {|cell| @cells[cell].empty? })
   end
-
+  
   def place(ship, coordinates)
     valid_placement?(ship, coordinates)
     coordinates.each do |coordinate|

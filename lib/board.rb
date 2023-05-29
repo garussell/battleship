@@ -50,4 +50,9 @@ class Board
       @cells[coordinate].place_ship(ship)
     end
   end
+
+  def render(ship_view = false)
+    p "  1 2 3 4 \n" + "A #{@cells["A1"].render(ship_view)} #{@cells["A2"].render(ship_view)} #{@cells["A3"].render(ship_view)} #{@cells["A4"].render(ship_view)} \n" + "B #{@cells["B1"].render(ship_view)} #{@cells["B2"].render(ship_view)} #{@cells["B3"].render(ship_view)} #{@cells["B4"].render(ship_view)} \n" + "C #{@cells["C1"].render(ship_view)} #{@cells["C2"].render(ship_view)} #{@cells["C3"].render(ship_view)} #{@cells["C4"].render(ship_view)} \n" + "D #{@cells["D1"].render(ship_view)} #{@cells["D2"].render(ship_view)} #{@cells["D3"].render(ship_view)} #{@cells["D4"].render(ship_view)} \n"
+    
+  end
 end

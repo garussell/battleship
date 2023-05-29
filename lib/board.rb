@@ -73,3 +73,13 @@ end
 
 ##hypothesis for vertical || horizontal placement:
 # vertical || horizontal therefore  not diagonal
+
+### Render the board:
+## hypothesis:
+# create method that 'prints' instance of board in the desired format using /n for line breaks
+# board class is rendered with all of the cells and maybe dynamic b/c a new instance could have more cells per user choice
+# after each turn (computer/user), the instance of 'board' can be rendered again, whish should show '.', 'S', 'M', or 'H'
+# the trick will be to only render user board to the user and keep the computer board 'private'
+# thinking ahead - the user can choose board size or number of ships, size of ships, and name of ships (aka new ship instance) if the code is dynamic
+# if user decides they want 3 ships, size 2,3, and 5, these preferences will be passed in as argument in new instance of ship class
+# if user wants a larger board, this will be passed as argument in new instance of board class

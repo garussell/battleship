@@ -51,15 +51,15 @@ class Game
     second_coordinate = gets.chomp
     player_coordinates << second_coordinate
 
-    if player_coordinates.valid_placement?(@cruiser, player_coordinates) == false
-      p "Try again with valid coordinates."
-      exit
-    end
 
     p "Enter the third coordinate for Cruiser"
     third_coordinate = gets.chomp
     player_coordinates << third_coordinate
-
+    
+    if player_coordinates.valid_placement?(@cruiser, player_coordinates) == false
+      p "Try again with valid coordinates."
+      exit
+    end
 
     # will prompt user to place ship and will return error if valid_placement? == false
   end

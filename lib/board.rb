@@ -38,7 +38,7 @@ class Board
     (ship.length == coordinates.length) && consecutive_order &&
     (coordinates.all? {|cell| @cells[cell].empty? })
   end
-  
+
   def consecutive_order?(ord_letter, num)
     (ord_letter.uniq.size == 1 && (num.each_cons(2).all? { |val_1, val_2| val_2 == val_1 + 1 })) ||
     (num.uniq.size == 1 && ord_letter.each_cons(2).all? { |num_1, num_2| num_2 == num_1 + 1 })  

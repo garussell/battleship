@@ -30,13 +30,37 @@ class Game
   end
 
   def computer_place_ships
-    # need random_coordinate_generator helper method
-    # ---> based on board.cells --> iterate through the cells using 'Random' and loop until it finds valid_placement?
-    # .place in board class places ship based on length etc and also calls on valid_placement?
+    # coordinates_3 = random_coordinate_generator(@computer_cruiser.length) 
+    # @computer_board.place(@computer_cruiser, coordinates_3)
+    # coordinates_2 = random_coordinate_generator(@computer_submarine.length) 
+    # @computer_board.place(@computer_submarine, coordinates_2)
+   
+  end
 
+  def random_coordinate_generator(ship_size)
+    # ship_coords = []
+    # ship_size.times { ship_coords << @computer_board.cells.sample until ship_coords.valid_placement? == true }
   end
 
   def player_place_ships
+    player_coordinates = []
+    p "Enter the first coordinate for Cruiser"
+    first_coordinate = gets.chomp
+    player_coordinates << first_coordinate
+    p "Enter the second coordinate for Cruiser"
+    second_coordinate = gets.chomp
+    player_coordinates << second_coordinate
+
+    if player_coordinates.valid_placement?(@cruiser, player_coordinates) == false
+      p "Try again with valid coordinates."
+      exit
+    end
+
+    p "Enter the third coordinate for Cruiser"
+    third_coordinate = gets.chomp
+    player_coordinates << third_coordinate
+
+
     # will prompt user to place ship and will return error if valid_placement? == false
   end
 

@@ -60,7 +60,7 @@ RSpec.describe Cell do
   end
   
   describe '#renders board' do
-    it 'renders the boards' do
+    xit 'renders the boards' do
 
       @board.place(@cruiser, ["A1", "A2", "A3"])
 

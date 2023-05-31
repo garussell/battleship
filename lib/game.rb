@@ -59,7 +59,7 @@ class Game
     puts "Enter the squares for the Cruiser (3 spaces):"
     human_coord_cruiser = gets.chomp.upcase.split()
     
-    if @human_board.valid_placement?(@cruiser, human_coord_cruiser) == false
+    if @human_board.valid_placement?(@cruiser, human_coord_cruiser) == false #|| @human_board.valid_coordinate?()
       p "Try again with valid coordinates." 
       player_place_cruiser
     else

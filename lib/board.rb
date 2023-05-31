@@ -36,7 +36,7 @@ class Board
     consecutive_order = consecutive_order?(ord_letter, num) 
     
     (ship.length == coordinates.length) && consecutive_order &&
-    (coordinates.all? {|cell| @cells[cell].empty? })
+    (coordinates.all? {|cell| @cells[cell].empty? }) 
   end
 
   def consecutive_order?(ord_letter, num)

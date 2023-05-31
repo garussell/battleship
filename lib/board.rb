@@ -38,7 +38,7 @@ class Board
     (ship.length == coordinates.length) && consecutive_order &&
     (coordinates.all? {|cell| @cells[cell].empty? })
   end
-  
+
   def consecutive_order?(ord_letter, num)
     (ord_letter.uniq.size == 1 && (num.each_cons(2).all? { |val_1, val_2| val_2 == val_1 + 1 })) ||
     (num.uniq.size == 1 && ord_letter.each_cons(2).all? { |num_1, num_2| num_2 == num_1 + 1 })  
@@ -52,7 +52,7 @@ class Board
   end
 
   def render(ship_view = false)
-    p "  1 2 3 4 \n" + "A #{@cells["A1"].render(ship_view)} #{@cells["A2"].render(ship_view)} #{@cells["A3"].render(ship_view)} #{@cells["A4"].render(ship_view)} \n" + "B #{@cells["B1"].render(ship_view)} #{@cells["B2"].render(ship_view)} #{@cells["B3"].render(ship_view)} #{@cells["B4"].render(ship_view)} \n" + "C #{@cells["C1"].render(ship_view)} #{@cells["C2"].render(ship_view)} #{@cells["C3"].render(ship_view)} #{@cells["C4"].render(ship_view)} \n" + "D #{@cells["D1"].render(ship_view)} #{@cells["D2"].render(ship_view)} #{@cells["D3"].render(ship_view)} #{@cells["D4"].render(ship_view)} \n"
+    puts "  1 2 3 4 \n" + "A #{@cells["A1"].render(ship_view)} #{@cells["A2"].render(ship_view)} #{@cells["A3"].render(ship_view)} #{@cells["A4"].render(ship_view)} \n" + "B #{@cells["B1"].render(ship_view)} #{@cells["B2"].render(ship_view)} #{@cells["B3"].render(ship_view)} #{@cells["B4"].render(ship_view)} \n" + "C #{@cells["C1"].render(ship_view)} #{@cells["C2"].render(ship_view)} #{@cells["C3"].render(ship_view)} #{@cells["C4"].render(ship_view)} \n" + "D #{@cells["D1"].render(ship_view)} #{@cells["D2"].render(ship_view)} #{@cells["D3"].render(ship_view)} #{@cells["D4"].render(ship_view)} \n"
   end
 end
 <<<<<<< HEAD

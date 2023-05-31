@@ -25,34 +25,115 @@ class Game
   end
 
   def setup
-    computer_place_ships
-    player_place_ships
+    computer_place_sub 
+    computer_place_cruiser 
+    player_place_cruiser
+    player_place_sub
+    turns
   end
 
-  def computer_place_ships
-    # need random_coordinate_generator helper method
-    # ---> based on board.cells --> iterate through the cells using 'Random' and loop until it finds valid_placement?
-    # .place in board class places ship based on length etc and also calls on valid_placement?
-
+  def computer_place_sub 
+    valid_cells = @computer_board.cells.keys.sample(2)
+    if @computer_board.valid_placement?(@computer_submarine, valid_cells)
+    @computer_board.place(@computer_submarine, valid_cells)
+    else
+    computer_place_sub
+    end
   end
 
-  def player_place_ships
-    # will prompt user to place ship and will return error if valid_placement? == false
+  def computer_place_cruiser
+    valid_cells = @computer_board.cells.keys.sample(3)
+    if @computer_board.valid_placement?(@computer_cruiser, valid_cells)
+    @computer_board.place(@computer_cruiser, valid_cells)
+    else
+    computer_place_cruiser
+    end
   end
 
-  def turns
-    player_turn # helper method
-    computer_turn # helper method
+  def player_place_cruiser
+    puts "I have laid out my ships on the grid."
+    puts "You now need to lay out your two ships."
+    puts "The Cruiser is three units long and the Submarine is two units long."
+    @human_board.render
+    
+    puts "Enter the squares for the Cruiser (3 spaces):"
+    human_coord_cruiser = gets.chomp.upcase.split()
+    
+    if @human_board.valid_placement?(@cruiser, human_coord_cruiser) == false
+      p "Try again with valid coordinates." 
+      player_place_cruiser
+    else
+      @human_board.place(@cruiser, human_coord_cruiser)
+      @human_board.render(true)
+    end
   end
 
-  def results
-    # prints results
+  def player_place_sub
+    puts "Enter the squares for the Submarine (2 spaces):"
+    human_coord_sub = gets.chomp.upcase.split()
+    
+    if @human_board.valid_placement?(@submarine, human_coord_sub) == false
+      puts "Try again with valid coordinates."
+      player_place_sub
+    else
+      @human_board.place(@submarine, human_coord_sub)
+      @human_board.render(true)
+    end
+  end
+  
+  # def turn
+  #   # loops through the computer/player turns until someone wins
+  # end
+  
+  def display_board
+    p "=============COMPUTER BOARD============="
+    @computer_board.render
+    
+    p "==============PLAYER BOARD=============="
+    @human_board.render(true)
+  end
+  
+  def computer_turn
+    human_keys = @human_board.cells.keys
+    target = human_keys.sample(1).join
+    until (@human_board.cells(target).fired_upon? == false) &&
+      @human_board.valid_coordinate?(target) do 
+        target
+      end
+      @human_board.cells(target).fire_upon
+      return_shots(target)
   end
 
-  def the_end
-    # prints something
+  # def return_shots
+  #   # what was the return value of the shot per turn?
+  #   # tells us if the shot was "H", "M", "X" etc
+  # end
+
+  def player_turn
+    p "Enter the coordinate for your shot: "
+    
+    target = gets.chomp.upcase
+    until @computer_board.valid_coordinate?(target) &&
+      @computer_board.cells(target).fired_upon? == false do
+        p "That coordinate has been fired upon already, please try again."
+        target
+      end
+
+      @computer_board.cells(target).fire_upon
+      return_shots(target) 
   end
 end
+
+  # def results
+  #   # prints results
+  # end
+
+  # def the_end
+      # 5 x's = game over
+  #   # prints something
+      # choice to play again or exit
+      # if play again go back to menu
+  # end
 
 
 ### Methods
@@ -66,5 +147,15 @@ end
 # player_turn
 # computer_turn
 
-# results
+# results/display
 # the_end
+#loop to menu after the_end
+
+
+
+# Things we want to ask Dani about:
+
+# 1)creating a module for game class and board class
+# 2) Refactoring the place ships methods. Do we need a method for each ship or is there a more dynamic way of handling human ships and computer ships?
+# 3)previous comments on endgame
+# 4) regarding expansion and iteration 4

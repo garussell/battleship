@@ -58,9 +58,10 @@ class Game
     
     puts "Enter the squares for the Cruiser (3 spaces):"
     human_coord_cruiser = gets.chomp.upcase.split()
+    true_coords = human_coord_cruiser.all? { |coordinate| @human_board.valid_coordinate?(coordinate) } 
     
-    if @human_board.valid_placement?(@cruiser, human_coord_cruiser) == false #|| @human_board.valid_coordinate?()
-      p "Try again with valid coordinates." 
+    if !true_coords || (@human_board.valid_placement?(@cruiser, human_coord_cruiser) == false) 
+      puts "Try again with valid coordinates." 
       player_place_cruiser
     else
       @human_board.place(@cruiser, human_coord_cruiser)
@@ -71,8 +72,9 @@ class Game
   def player_place_sub
     puts "Enter the squares for the Submarine (2 spaces):"
     human_coord_sub = gets.chomp.upcase.split()
-    
-    if @human_board.valid_placement?(@submarine, human_coord_sub) == false
+    true_coords = human_coord_sub.all? { |coordinate| @human_board.valid_coordinate?(coordinate) } 
+
+    if !true_coords || (@human_board.valid_placement?(@submarine, human_coord_sub) == false)
       puts "Try again with valid coordinates."
       player_place_sub
     else

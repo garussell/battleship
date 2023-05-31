@@ -51,35 +51,39 @@ class Game
   end
 
   def player_place_cruiser
-    p "I have laid out my ships on the grid.
-    You now need to lay out your two ships.
-    The Cruiser is three units long and the Submarine is two units long. Enter the first coordinate for Cruiser"
+    puts "I have laid out my ships on the grid."
+    puts "You now need to lay out your two ships."
+    puts "The Cruiser is three units long and the Submarine is two units long."
     @human_board.render
     
-    p "Enter the squares for the Cruiser (3 spaces):"
+    puts "Enter the squares for the Cruiser (3 spaces):"
     human_coord_cruiser = gets.chomp.upcase.split()
+    
     if @human_board.valid_placement?(@cruiser, human_coord_cruiser) == false
       p "Try again with valid coordinates." 
-      setup
+      player_place_cruiser
+    else
+      @human_board.place(@cruiser, human_coord_cruiser)
+      @human_board.render(true)
     end
-    @human_board.place(@cruiser, human_coord_cruiser)
-    @human_board.render(true)
   end
 
   def player_place_sub
-    p "Enter the squares for the Submarine (2 spaces):"
+    puts "Enter the squares for the Submarine (2 spaces):"
     human_coord_sub = gets.chomp.upcase.split()
+    
     if @human_board.valid_placement?(@submarine, human_coord_sub) == false
-      p "Try again with valid coordinates." 
-      setup
+      puts "Try again with valid coordinates."
+      player_place_sub
+    else
+      @human_board.place(@submarine, human_coord_sub)
+      @human_board.render(true)
     end
-    @human_board.place(@submarine, human_coord_sub)
-    @human_board.render(true)
   end
   
-  def turn
-    # loops through the computer/player turns until someone wins
-  end
+  # def turn
+  #   # loops through the computer/player turns until someone wins
+  # end
   
   def display_board
     p "=============COMPUTER BOARD============="
@@ -98,14 +102,12 @@ class Game
       end
       @human_board.cells(target).fire_upon
       return_shots(target)
-    end
   end
 
-  def return_shots
-    # what was the return value of the shot per turn?
-    # tells us if the shot was "H", "M", "X" etc
- 
-  end
+  # def return_shots
+  #   # what was the return value of the shot per turn?
+  #   # tells us if the shot was "H", "M", "X" etc
+  # end
 
   def player_turn
     p "Enter the coordinate for your shot: "
@@ -119,7 +121,8 @@ class Game
 
       @computer_board.cells(target).fire_upon
       return_shots(target)
-    end
+  
+   
   end
 end
 

@@ -120,9 +120,7 @@ class Game
       end
 
       @computer_board.cells(target).fire_upon
-      return_shots(target)
-  
-   
+      return_shots(target) 
   end
 end
 

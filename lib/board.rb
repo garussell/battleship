@@ -55,7 +55,6 @@ class Board
     puts "  1 2 3 4 \n" + "A #{@cells["A1"].render(ship_view)} #{@cells["A2"].render(ship_view)} #{@cells["A3"].render(ship_view)} #{@cells["A4"].render(ship_view)} \n" + "B #{@cells["B1"].render(ship_view)} #{@cells["B2"].render(ship_view)} #{@cells["B3"].render(ship_view)} #{@cells["B4"].render(ship_view)} \n" + "C #{@cells["C1"].render(ship_view)} #{@cells["C2"].render(ship_view)} #{@cells["C3"].render(ship_view)} #{@cells["C4"].render(ship_view)} \n" + "D #{@cells["D1"].render(ship_view)} #{@cells["D2"].render(ship_view)} #{@cells["D3"].render(ship_view)} #{@cells["D4"].render(ship_view)} \n"
   end
 end
-<<<<<<< HEAD
 
 # def placement_length
 #   ship.length == coordinates.length
@@ -88,5 +87,3 @@ end
 # thinking ahead - the user can choose board size or number of ships, size of ships, and name of ships (aka new ship instance) if the code is dynamic
 # if user decides they want 3 ships, size 2,3, and 5, these preferences will be passed in as argument in new instance of ship class
 # if user wants a larger board, this will be passed as argument in new instance of board class
-=======
->>>>>>> iteration_3_ar

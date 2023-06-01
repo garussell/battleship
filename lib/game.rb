@@ -1,4 +1,7 @@
+require "./lib/asciiable"
+
 class Game
+  include Asciiable
   attr_reader :menu
 
   def initialize
@@ -13,14 +16,17 @@ class Game
   end
 
   def menu
-    p "Welcome to BATTLESHIP"
-    sleep(2.0)
+    puts welcome
+    sleep(1.0)
+    puts battleship
+    sleep(1.5)
     p "Enter p to play"
     p "Enter q to quit"
 
     p_or_q = gets.chomp
 
     if p_or_q == "p"
+      puts boat
       setup
     else
       exit
@@ -94,7 +100,7 @@ class Game
     p "=============COMPUTER BOARD============="
     @computer_board.render
     sleep(1.0)
-    
+
     p "==============PLAYER BOARD=============="
     @human_board.render(true)
     sleep(1.0)
@@ -112,17 +118,23 @@ class Game
 
   def return_shots(shot)
     if @human_board.cells[shot].render == "X"
-    puts "My shot at #{shot} sunk your ship! Take that!"
+      puts sunk
+      puts "My shot at #{shot} sunk your ship! Take that!"
     elsif @computer_board.cells[shot].render == "X"
-    puts "Your shot at #{shot} sunk my ship! Damn youse all to hell!"
+      puts sunk
+      puts "Your shot at #{shot} sunk my ship! Damn youse all to hell!"
     elsif @human_board.cells[shot].render == "H"
-    puts "My shot at #{shot} was a hit! There's more where that came from! Scared yet?"
+      puts got_you
+      puts "My shot at #{shot} was a hit! There's more where that came from! Scared yet?"
     elsif @computer_board.cells[shot].render == "H"
-    puts "Your shot at #{shot} was a hit! You got lucky!"
+      puts you_got_me
+      puts "Your shot at #{shot} was a hit! You got lucky!"
     elsif @human_board.cells[shot].render == "M"
-    puts "My shot at #{shot} was a miss! You can't hide forever..."
-    else @computer_board.cells[shot].render == "M"
-    puts "Your shot at #{shot} was a miss! Not even close!"
+      puts you_miss
+      puts "My shot at #{shot} was a miss! You can't hide forever..."
+    elsif @computer_board.cells[shot].render == "M"
+      puts i_miss
+      puts "Your shot at #{shot} was a miss! Not even close!"
     end
   end
 
@@ -171,8 +183,9 @@ class Game
   end
 
   def game_over
-    puts "GAME OVER!"
-    puts "Play again."
+    puts ascii_game_over
+    sleep(1.5)
+    puts play_again
     reset_board
     menu
   end

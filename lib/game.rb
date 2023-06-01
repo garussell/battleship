@@ -1,4 +1,7 @@
+require "./lib/asciiable"
+
 class Game
+  include Asciiable
   attr_reader :menu
 
   def initialize
@@ -13,13 +16,17 @@ class Game
   end
 
   def menu
-    p "Welcome to BATTLESHIP"
+    puts welcome
+    sleep(1.0)
+    puts battleship
+    sleep(1.5)
     p "Enter p to play"
     p "Enter q to quit"
 
     p_or_q = gets.chomp
 
     if p_or_q == "p"
+      puts boat
       setup
     else
       exit
@@ -29,8 +36,10 @@ class Game
   def setup
     computer_place_sub 
     computer_place_cruiser 
+    sleep(1.3)
     player_place_cruiser
     player_place_sub
+    sleep(1.3)
     turns
   end
 
@@ -54,7 +63,9 @@ class Game
 
   def player_place_cruiser
     puts "I have laid out my ships on the grid."
+    sleep(1.0)
     puts "You now need to lay out your two ships."
+    sleep(1.0)
     puts "The Cruiser is three units long and the Submarine is two units long."
     @human_board.render
     
@@ -88,9 +99,11 @@ class Game
   def display_board
     p "=============COMPUTER BOARD============="
     @computer_board.render
-    
+    sleep(1.0)
+
     p "==============PLAYER BOARD=============="
     @human_board.render(true)
+    sleep(1.0)
   end
 
   def computer_turn
@@ -105,17 +118,23 @@ class Game
 
   def return_shots(shot)
     if @human_board.cells[shot].render == "X"
-    puts "My shot at #{shot} sunk your ship! Take that!"
+      puts sunk
+      puts "My shot at #{shot} sunk your ship! Take that!"
     elsif @computer_board.cells[shot].render == "X"
-    puts "Your shot at #{shot} sunk my ship! Damn youse all to hell!"
+      puts sunk
+      puts "Your shot at #{shot} sunk my ship! Damn youse all to hell!"
     elsif @human_board.cells[shot].render == "H"
-    puts "My shot at #{shot} was a hit! There's more where that came from! Scared yet?"
+      puts got_you
+      puts "My shot at #{shot} was a hit! There's more where that came from! Scared yet?"
     elsif @computer_board.cells[shot].render == "H"
-    puts "Your shot at #{shot} was a hit! You got lucky!"
+      puts you_got_me
+      puts "Your shot at #{shot} was a hit! You got lucky!"
     elsif @human_board.cells[shot].render == "M"
-    puts "My shot at #{shot} was a miss! You can't hide forever..."
-    else @computer_board.cells[shot].render == "M"
-    puts "Your shot at #{shot} was a miss! Not even close!"
+      puts you_miss
+      puts "My shot at #{shot} was a miss! You can't hide forever..."
+    elsif @computer_board.cells[shot].render == "M"
+      puts i_miss
+      puts "Your shot at #{shot} was a miss! Not even close!"
     end
   end
 
@@ -144,7 +163,7 @@ class Game
     until @comp_sunk_ships == 2 || @human_sunk_ships == 2 do
       display_board
       computer_turn
-      sleep(1.5)
+      sleep(0.5)
       display_board
       player_turn
     end
@@ -164,8 +183,9 @@ class Game
   end
 
   def game_over
-    puts "GAME OVER!"
-    puts "Play again."
+    puts ascii_game_over
+    sleep(1.5)
+    puts play_again
 
     @computer_board = Board.new
     @human_board = Board.new

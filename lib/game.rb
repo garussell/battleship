@@ -8,6 +8,8 @@ class Game
     @cruiser = Ship.new("Cruiser", 3)
     @computer_board = Board.new
     @human_board = Board.new
+    @comp_sunk_ships = 0
+    @human_sunk_ships = 0
   end
 
   def menu
@@ -83,10 +85,6 @@ class Game
     end
   end
   
-  # def turn
-  #   # loops through the computer/player turns until someone wins
-  # end
-  
   def display_board
     p "=============COMPUTER BOARD============="
     @computer_board.render
@@ -94,70 +92,87 @@ class Game
     p "==============PLAYER BOARD=============="
     @human_board.render(true)
   end
-  
+
   def computer_turn
     human_keys = @human_board.cells.keys
-    target = human_keys.sample(1).join
-    until (@human_board.cells(target).fired_upon? == false) &&
-      @human_board.valid_coordinate?(target) do 
-        target
-      end
-      @human_board.cells(target).fire_upon
-      return_shots(target)
+    target = nil
+    until target && !@human_board.cells[target].fired_upon? && @human_board.valid_coordinate?(target)
+      target = human_keys.sample
+    end
+    @human_board.cells[target].fire_upon
+    return_shots(target)
   end
 
-  # def return_shots
-  #   # what was the return value of the shot per turn?
-  #   # tells us if the shot was "H", "M", "X" etc
-  # end
+  def return_shots(shot)
+    if @human_board.cells[shot].render == "X"
+    puts "My shot at #{shot} sunk your ship! Take that!"
+    elsif @computer_board.cells[shot].render == "X"
+    puts "Your shot at #{shot} sunk my ship! Damn youse all to hell!"
+    elsif @human_board.cells[shot].render == "H"
+    puts "My shot at #{shot} was a hit! There's more where that came from! Scared yet?"
+    elsif @computer_board.cells[shot].render == "H"
+    puts "Your shot at #{shot} was a hit! You got lucky!"
+    elsif @human_board.cells[shot].render == "M"
+    puts "My shot at #{shot} was a miss! You can't hide forever..."
+    else @computer_board.cells[shot].render == "M"
+    puts "Your shot at #{shot} was a miss! Not even close!"
+    end
+  end
 
   def player_turn
     p "Enter the coordinate for your shot: "
-    
     target = gets.chomp.upcase
     until @computer_board.valid_coordinate?(target) &&
-      @computer_board.cells(target).fired_upon? == false do
-        p "That coordinate has been fired upon already, please try again."
-        target
-      end
+    @computer_board.cells[target].fired_upon? == false do
+    p "That coordinate has been fired upon already, please try again."
+    target = gets.chomp.upcase
+    end
+    @computer_board.cells[target].fire_upon
+    check_sunk_ships(target)
+    return_shots(target)
+  end
 
-      @computer_board.cells(target).fire_upon
-      return_shots(target) 
+  def check_sunk_ships(shot)
+    if @computer_board.cells[shot].render == "X"
+    @comp_sunk_ships += 1
+    elsif @human_board.cells[shot].render == "X"
+      @human_sunk_ships += 1
+    end
+  end
+
+  def turns
+    until @comp_sunk_ships == 2 || @human_sunk_ships == 2 do
+      display_board
+      computer_turn
+      sleep(1.5)
+      display_board
+      player_turn
+    end
+   
+    if @comp_sunk_ships == 2
+      display_board
+      puts "How did you beat me??? Try again, I want a rematch"
+      sleep(0.8)
+      game_over
+    else
+      @human_sunk_ships == 2
+      display_board
+      puts "Next time bring a challenge, new meat. I WIN!!!"
+      sleep(0.8)
+      game_over
+    end
+  end
+
+  def game_over
+    puts "GAME OVER!"
+    puts "Play again."
+
+    @computer_board = Board.new
+    @human_board = Board.new
+    @comp_sunk_ships = 0
+    @human_sunk_ships = 0
+  
+    menu
   end
 end
-
-  # def results
-  #   # prints results
-  # end
-
-  # def the_end
-      # 5 x's = game over
-  #   # prints something
-      # choice to play again or exit
-      # if play again go back to menu
-  # end
-
-
-### Methods
-# setup
-# exit
-# computer_place_ships
-#  ---- need random_coordinate_generator
-# player_place_ships
-
-## turns --> display the boards at the start of the turn (user does not see computer ships)
-# player_turn
-# computer_turn
-
-# results/display
-# the_end
-#loop to menu after the_end
-
-
-
-# Things we want to ask Dani about:
-
-# 1)creating a module for game class and board class
-# 2) Refactoring the place ships methods. Do we need a method for each ship or is there a more dynamic way of handling human ships and computer ships?
-# 3)previous comments on endgame
-# 4) regarding expansion and iteration 4
+  

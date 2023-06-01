@@ -14,6 +14,7 @@ class Game
 
   def menu
     p "Welcome to BATTLESHIP"
+    sleep(2.0)
     p "Enter p to play"
     p "Enter q to quit"
 
@@ -29,8 +30,10 @@ class Game
   def setup
     computer_place_sub 
     computer_place_cruiser 
+    sleep(1.3)
     player_place_cruiser
     player_place_sub
+    sleep(1.3)
     turns
   end
 
@@ -54,7 +57,9 @@ class Game
 
   def player_place_cruiser
     puts "I have laid out my ships on the grid."
+    sleep(1.0)
     puts "You now need to lay out your two ships."
+    sleep(1.0)
     puts "The Cruiser is three units long and the Submarine is two units long."
     @human_board.render
     
@@ -88,9 +93,11 @@ class Game
   def display_board
     p "=============COMPUTER BOARD============="
     @computer_board.render
+    sleep(1.0)
     
     p "==============PLAYER BOARD=============="
     @human_board.render(true)
+    sleep(1.0)
   end
 
   def computer_turn
@@ -144,11 +151,11 @@ class Game
     until @comp_sunk_ships == 2 || @human_sunk_ships == 2 do
       display_board
       computer_turn
-      sleep(1.5)
+      sleep(0.5)
       display_board
       player_turn
     end
-   
+    
     if @comp_sunk_ships == 2
       display_board
       puts "How did you beat me??? Try again, I want a rematch"
@@ -166,13 +173,19 @@ class Game
   def game_over
     puts "GAME OVER!"
     puts "Play again."
+    reset_board
+    menu
+  end
 
+  def reset_board
+    @computer_submarine = Ship.new("Submarine", 2)
+    @computer_cruiser = Ship.new("Cruiser", 3)
+    @submarine = Ship.new("Submarine", 2)
+    @cruiser = Ship.new("Cruiser", 3)
     @computer_board = Board.new
     @human_board = Board.new
     @comp_sunk_ships = 0
     @human_sunk_ships = 0
-  
-    menu
   end
 end
   

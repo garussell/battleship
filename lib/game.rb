@@ -9,12 +9,10 @@ class Game
     @computer_cruiser = Ship.new("Cruiser", 3)
     @submarine = Ship.new("Submarine", 2)
     @cruiser = Ship.new("Cruiser", 3)
-    @computer_board = Board.new
-    @human_board = Board.new
     @comp_sunk_ships = 0
     @human_sunk_ships = 0
   end
-
+  
   def menu
     puts welcome
     sleep(1.0)
@@ -22,9 +20,9 @@ class Game
     sleep(1.5)
     p "Enter p to play"
     p "Enter q to quit"
-
+    
     p_or_q = gets.chomp
-
+    
     if p_or_q == "p"
       puts boat
       setup
@@ -32,8 +30,22 @@ class Game
       exit
     end
   end
-
+  
+  def select_board_size
+    puts "Enter the size of the board you want to play on (4-10): "
+    board_size = gets.chomp.to_i
+    until board_size >= 4 && board_size <= 10 do
+      puts "Please enter a valid board size (4-10): "
+      board_size = gets.chomp.to_i
+    end
+    
+    
+    @computer_board = Board.new(board_size)
+    @human_board = Board.new(board_size)
+  end
+  
   def setup
+    select_board_size
     computer_place_sub 
     computer_place_cruiser 
     sleep(1.3)
@@ -98,11 +110,11 @@ class Game
   
   def display_board
     p "=============COMPUTER BOARD============="
-    @computer_board.render
+    puts @computer_board.render
     sleep(1.0)
 
     p "==============PLAYER BOARD=============="
-    @human_board.render(true)
+    puts @human_board.render(true)
     sleep(1.0)
   end
 
@@ -195,8 +207,8 @@ class Game
     @computer_cruiser = Ship.new("Cruiser", 3)
     @submarine = Ship.new("Submarine", 2)
     @cruiser = Ship.new("Cruiser", 3)
-    @computer_board = Board.new
-    @human_board = Board.new
+    @computer_board = Board.new(0)
+    @human_board = Board.new(0)
     @comp_sunk_ships = 0
     @human_sunk_ships = 0
   end

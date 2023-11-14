@@ -2,48 +2,73 @@ require 'spec_helper'
 
 RSpec.describe Cell do
   before(:each) do
-    @board = Board.new
+    @small_board = Board.new(4)
+    @large_board = Board.new(10)
     @cruiser = Ship.new("Cruiser", 3)
     @submarine = Ship.new("Submarine", 2)
   end
 
   describe '#initialize' do 
-    it 'exists' do
-      expect(@board).to be_instance_of(Board)
-      expect(@board.cells.count).to eq(16)
-      expect(@board.cells).to be_a Hash
-      expect(@board.cells["A1"]).to be_a(Cell)
-      expect(@board.cells["C3"]).to be_a(Cell)
-      expect(@board.cells["D2"]).to be_a(Cell)
-      expect(@board.cells["A4"].coordinate).to eq("A4")
+    it 'exists and has attributes' do
+      expect(@small_board.board_size).to eq(4)
+      expect(@large_board.board_size).to eq(10)
+      expect(@small_board).to be_instance_of(Board)
+      expect(@small_board.cells.count).to eq(16)
+      expect(@small_board.cells).to be_a(Hash)
     end
   end
-  describe '#validations' do
-    it 'can recognize valid coordinates' do
-      expect(@board.valid_coordinate?("A1")).to eq(true)
-      expect(@board.valid_coordinate?("D4")).to eq(true)
-      expect(@board.valid_coordinate?("A5")).to eq(false)
-      expect(@board.valid_coordinate?("E1")).to eq(false)
-      expect(@board.valid_coordinate?("A22")).to eq(false)
-    end
 
+  describe '#create_cells' do
+    it 'creates cells' do
+      rendered_cells = @small_board.create_cells
+      expect(rendered_cells).to be_a(Hash)
+      expect(rendered_cells.count).to eq(16)
+      expect(rendered_cells["A1"]).to be_a(Cell)
+      expect(rendered_cells["A1"].coordinate).to eq("A1")
+      expect(rendered_cells["D4"]).to be_a(Cell)
+      expect(rendered_cells["D4"].coordinate).to eq("D4")
+    end
+  end
+
+  describe '#valid_coordinate?' do
+    it 'can recognize valid coordinates' do
+      expect(@small_board.valid_coordinate?("A1")).to eq(true)
+      expect(@small_board.valid_coordinate?("D4")).to eq(true)
+      expect(@small_board.valid_coordinate?("A5")).to eq(false)
+      expect(@small_board.valid_coordinate?("E1")).to eq(false)
+      expect(@small_board.valid_coordinate?("A22")).to eq(false)
+
+      expect(@large_board.valid_coordinate?("A1")).to eq(true)
+      expect(@large_board.valid_coordinate?("J10")).to eq(true)
+      expect(@large_board.valid_coordinate?("A11")).to eq(false)
+      expect(@large_board.valid_coordinate?("K1")).to eq(false)
+      expect(@large_board.valid_coordinate?("A22")).to eq(false)
+    end
+  end
+
+  describe '#valid_placement?' do
     it 'can validate placements' do
-      expect(@board.valid_placement?(@cruiser, ["A1", "A2"])).to eq(false)
-      expect(@board.valid_placement?(@submarine, ["A2", "A3", "A4"])).to eq(false)
-      expect(@board.valid_placement?(@cruiser, ["A1", "A2", "A4"])).to eq(false)
-      expect(@board.valid_placement?(@submarine, ["A1", "C1"])).to eq(false)
-      expect(@board.valid_placement?(@cruiser, ["A3", "A2", "A1"])).to eq(false)
-      expect(@board.valid_placement?(@submarine, ["C1", "B1"])).to eq(false)
+      expect(@small_board.valid_placement?(@cruiser, ["A1", "A2"])).to eq(false)
+      expect(@small_board.valid_placement?(@submarine, ["A2", "A3", "A4"])).to eq(false)
+      expect(@small_board.valid_placement?(@cruiser, ["A1", "A2", "A4"])).to eq(false)
+      expect(@small_board.valid_placement?(@submarine, ["A1", "C1"])).to eq(false)
+      expect(@small_board.valid_placement?(@cruiser, ["A3", "A2", "A1"])).to eq(false)
+
+      expect(@large_board.valid_placement?(@cruiser, ["A1", "A2"])).to eq(false)
+      expect(@large_board.valid_placement?(@submarine, ["A2", "A3", "A4"])).to eq(false)
+      expect(@large_board.valid_placement?(@cruiser, ["A1", "A2", "A4"])).to eq(false)
+      expect(@large_board.valid_placement?(@submarine, ["A1", "C1"])).to eq(false)
+      expect(@large_board.valid_placement?(@cruiser, ["A3", "A2", "A1"])).to eq(false)
     end
   end
 
   describe '#place(ship, coordinates)' do
     it 'can place ship on cell' do
-      @board.place(@cruiser, ["A1", "A2", "A3"])
-      cell_1 = @board.cells["A1"]
-      cell_2 = @board.cells["A2"]
-      cell_3 = @board.cells["A3"]
-      cell_4 = @board.cells["D4"]
+      @small_board.place(@cruiser, ["A1", "A2", "A3"])
+      cell_1 = @small_board.cells["A1"]
+      cell_2 = @small_board.cells["A2"]
+      cell_3 = @small_board.cells["A3"]
+      cell_4 = @small_board.cells["D4"]
 
       expect(cell_1.ship).to be_a(Ship)
       expect(cell_2.ship).to be_a(Ship)
@@ -54,18 +79,18 @@ RSpec.describe Cell do
     end
 
     it 'cannot place ship on occupied cell' do
-      @board.place(@cruiser, ["A1", "A2", "A3"])
-      expect(@board.valid_placement?(@submarine, ["A1", "B1"])).to eq(false)
+      @small_board.place(@cruiser, ["A1", "A2", "A3"])
+      expect(@small_board.valid_placement?(@submarine, ["A1", "B1"])).to eq(false)
     end
   end
   
   describe '#renders board' do
-    xit 'renders the boards' do
+    it 'renders the boards' do
 
-      @board.place(@cruiser, ["A1", "A2", "A3"])
+      @small_board.place(@cruiser, ["A1", "A2", "A3"])
 
-      expect(@board.render).to eq("  1 2 3 4 \nA . . . . \nB . . . . \nC . . . . \nD . . . . \n")
-      expect(@board.render(true)).to eq("  1 2 3 4 \nA S S S . \nB . . . . \nC . . . . \nD . . . . \n")
+      expect(@small_board.render).to eq("  1 2 3 4 \nA . . . . \nB . . . . \nC . . . . \nD . . . . \n")
+      expect(@small_board.render(true)).to eq("  1 2 3 4 \nA S S S . \nB . . . . \nC . . . . \nD . . . . \n")
     end
   end
 end

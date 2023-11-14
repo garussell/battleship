@@ -1,26 +1,23 @@
 
 class Board
-  attr_reader :cells
+  attr_reader :cells, :board_size
   
-  def initialize
-    @cells = {
-      "A1" => Cell.new("A1"),
-      "A2" => Cell.new("A2"),
-      "A3" => Cell.new("A3"),
-      "A4" => Cell.new("A4"),
-      "B1" => Cell.new("B1"),
-      "B2" => Cell.new("B2"),
-      "B3" => Cell.new("B3"),
-      "B4" => Cell.new("B4"),
-      "C1" => Cell.new("C1"),
-      "C2" => Cell.new("C2"),
-      "C3" => Cell.new("C3"),
-      "C4" => Cell.new("C4"),
-      "D1" => Cell.new("D1"),
-      "D2" => Cell.new("D2"),
-      "D3" => Cell.new("D3"),
-      "D4" => Cell.new("D4")
-    }
+  def initialize(board_size)
+    @board_size = board_size
+    @cells = create_cells
+  end
+
+  def create_cells
+    cells = {}
+    letters = ("A"..("A".ord + @board_size - 1).chr).to_a
+    numbers = (1..@board_size).to_a
+    letters.each do |letter|
+      numbers.each do |number|
+        coordinate = letter + number.to_s
+        cells[coordinate] = Cell.new(coordinate)
+      end
+    end
+    cells
   end
 
   def valid_coordinate?(coordinate)
@@ -51,8 +48,39 @@ class Board
     end
   end
 
-  def render(ship_view = false)
-    puts "  1 2 3 4 \n" + "A #{@cells["A1"].render(ship_view)} #{@cells["A2"].render(ship_view)} #{@cells["A3"].render(ship_view)} #{@cells["A4"].render(ship_view)} \n" + "B #{@cells["B1"].render(ship_view)} #{@cells["B2"].render(ship_view)} #{@cells["B3"].render(ship_view)} #{@cells["B4"].render(ship_view)} \n" + "C #{@cells["C1"].render(ship_view)} #{@cells["C2"].render(ship_view)} #{@cells["C3"].render(ship_view)} #{@cells["C4"].render(ship_view)} \n" + "D #{@cells["D1"].render(ship_view)} #{@cells["D2"].render(ship_view)} #{@cells["D3"].render(ship_view)} #{@cells["D4"].render(ship_view)} \n"
+  def render(show_board = false) 
+    if show_board
+      "#{first_line} \n" +
+      "#{next_lines(show_board)}"
+    else
+      "#{first_line} \n" +
+      "#{next_lines(show_board)}"
+    end
+  end
+
+  def first_line
+    string = " "
+    (1..board_size).each do |num|
+      string += " #{num}"
+    end
+    string
+  end
+
+  def next_lines(show_board)
+    letters = ("A"..("A".ord + @board_size - 1).chr).to_a
+    string = ""
+    letters.each do |letter|
+      string += "#{letter}"
+      letter_keys = create_cells.select do |key|
+        key[0] == letter
+      end
+      
+      letter_keys.keys.map do |key|
+        string += " #{cells[key].render(show_board)}"
+      end 
+      string += " \n"
+    end
+    string
   end
 end
 

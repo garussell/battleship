@@ -56,3 +56,4 @@ In future iterations, I plan to:
 Additionally, I am excited to recreate this project in Java to compare the two implementations. This comparative analysis will provide valuable insights into the strengths and differences between Ruby and Java, offering a unique perspective on the game development process.
 
 This project stands as a testament to its humble beginnings during Turing School of Software and Design Mod1. As we look towards the future, these potential improvements will contribute to the growth and evolution of the Battleship game.
+
